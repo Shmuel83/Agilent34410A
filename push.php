@@ -1,10 +1,10 @@
 <?php
 // Replace with real server API key from Google APIs
-$apiKey = "AIzaSyBNocSKnUTtFo4UD-LYQKb3XxAhuhTIVUU";
+$apiKey = "<Your API KEY>";
 
 // Replace with real client registration IDs
 $registrationIDs = array(
-"APA91bG7enqKABfClk0SDyjlETi4MWvobXsF7JJ8NZCrVWfFgEBOcrnfUXBciVM_rJCtWhUDNP8r7HHeZ8tlESLp1SAh5jtkGXHCE_pYtLs9JiwzYjrzU4sLvbXsqZJt1ITQ_aZUvJZgtU64GUEF9sOH9_SCn1LMYsLZHXwqT3M57BqaapO-4g0");
+"<Your Registration IDs");
 
 // Message to be sent
 $message = "Ceci est un test";
