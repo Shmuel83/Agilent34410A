@@ -68,7 +68,7 @@ core-field {
 </head>
 <body>
 <header class="app-bar promote-layer"><div class=app-bar-container><button class=menu><img src=images/hamburger.svg alt=Menu></button><h1 class=logo>Application Agilent  <strong>34440A</strong></h1><section class=app-bar-actions></section></div></header>
-<nav class="navdrawer-container promote-layer"><h4>Navigation</h4><ul><li><a href=#hello>Mesure</a></li><li><a href="READ_ME.txt">Read Me</a></li><li><a href="34410A_Quick_Reference.pdf">Commands</a></li></ul></nav>
+<nav class="navdrawer-container promote-layer"><h4>Navigation</h4><ul><li><a href=#hello>Mesure</a></li><li><a href="README.md">Read Me</a></li><li><a href="34410A_Quick_Reference.pdf">Commands</a></li></ul></nav>
 <main>
 
 <?php
