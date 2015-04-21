@@ -1,0 +1,44 @@
+{
+    "autoPrefixer": null,
+    "customRuby": false,
+    "customRubyPath": null,
+    "customTodos": null,
+    "debug": false,
+    "domain": null,
+    "followLeader": true,
+    "ignoreDir": [
+        "ignore"
+    ],
+    "less": null,
+    "lintScripts": false,
+    "modelSource": null,
+    "optimiseImages": true,
+    "optimiseSVG": true,
+    "password": null,
+    "preprocessorLocations": [
+        "assets"
+    ],
+    "preprocessorScriptOutput": "assets/js",
+    "preprocessorStyleOutput": "assets/css",
+    "sass": null,
+    "projectDescription": "Sassaparilla",
+    "projectName": "Sassaparilla",
+    "publishedId": null,
+    "remoteDebugPort": 0,
+    "routes": null,
+    "serverHostname": "localhost",
+    "serverPort": null,
+    "simpleModeFileTypes": null,
+    "simpleModePartnerServer": null,
+    "sitemap": false,
+    "templateDefaultLayout": "layout",
+    "templateDefaultPage": "index",
+    "templateDirectory": "templates",
+    "type": "mixture",
+    "useCompass": true,
+    "convertHtml": {
+        "extension": ".html",
+        "path": null,
+        "relativePaths": false
+    }
+}
