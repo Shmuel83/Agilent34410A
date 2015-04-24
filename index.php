@@ -34,8 +34,37 @@ function push_noty() {
 		modal:false
 	});
 }
+function IP_noty() {
+	noty({
+		text:"Atttention, connection échoué avec l'appareil",
+		layout:"topCenter",
+		type:"warning",
+		animation:{
+			open:"animated flipInX",
+			close:"animated flipOutX",
+			speed:500
+		},
+		timeout:false,
+		closeButton:true,
+		closeOnSelfClick:true,
+		closeOnSelfOver:false,
+		modal:false
+	});
+}
 //]]>
 </script>
+<style>
+core-field {
+      border: 1px solid #ddd;
+      margin: 10px;
+      height: 40px;
+    }
+</style>
+</head>
+<body>
+<header class="app-bar promote-layer"><div class=app-bar-container><button class=menu><img src=images/hamburger.svg alt=Menu></button><h1 class=logo>Application Agilent  <strong>34440A</strong></h1><section class=app-bar-actions></section></div></header>
+<nav class="navdrawer-container promote-layer"><h4>Navigation</h4><ul><li><a href=#hello>Mesure</a></li><li><a href="README.md">Read Me</a></li><li><a href="34410A_Quick_Reference.pdf">Commands</a></li></ul></nav>
+<main>
 <?php
 //Default input
 $address = "169.254.102.195";
@@ -50,28 +79,15 @@ if(isset($_POST["submit"])) {
 	$address = $_POST["address"];
 	$port = $_POST["port"];
 	$request = $_POST["requete"];
-	$texteSubmit = "Mesure en cours";
+	if($host = gethostbyaddr($address)) {
+		$texteSubmit = "Attente de la connection...";
+	}
+	else{
+		echo"<script>IP_noty();</script>";
+	}
 	$save = $_POST["save"];
-	echo"<title>$save $request</title>";
 }
-else {
-	echo "<title>Mesure Agilent 34410A</title>";
-}
-?>
-<style>
-core-field {
-      border: 1px solid #ddd;
-      margin: 10px;
-      height: 40px;
-    }
-</style>
-</head>
-<body>
-<header class="app-bar promote-layer"><div class=app-bar-container><button class=menu><img src=images/hamburger.svg alt=Menu></button><h1 class=logo>Application Agilent  <strong>34440A</strong></h1><section class=app-bar-actions></section></div></header>
-<nav class="navdrawer-container promote-layer"><h4>Navigation</h4><ul><li><a href=#hello>Mesure</a></li><li><a href="README.md">Read Me</a></li><li><a href="34410A_Quick_Reference.pdf">Commands</a></li></ul></nav>
-<main>
 
-<?php
 //Settings
 echo "<form method='post' id='ask' >
 <core-field><core-icon icon='settings-input-hdmi'></core-icon><label>Adresse</label><input type='text' name='address' id='address' value='$address' flex></core-field>
@@ -79,7 +95,7 @@ echo "<form method='post' id='ask' >
 <core-field><core-icon icon='assignment'></core-icon><label for='mesure'>Mesure </label> <select name='requete' id='requete' style='border:none' flex><option value='$request'> $request</option><option value='MEAS:CAP?'>MEAS:CAP?</option><option value='MEAS:CONT?'>MEAS:CONT?</option><option value='MEAS:CAP?'>MEAS:CAP?</option><option value='MEAS:CURR:AC?'>MEAS:CURR:AC?</option><option value='MEAS:CURR:DC?'>MEAS:CURR:DC?</option><option value='MEAS:DIOD?'>MEAS:DIOD?</option><option value='MEAS:FREQ?'>MEAS:FREQ?</option><option value='MEAS:FRES?'>MEAS:FRES?</option><option value='MEAS:PER?'>MEAS:PER?</option><option value='MEAS:RES?'>MEAS:RES?</option><option value='MEAS:TEMP?'>MEAS:TEMP?</option><option value='MEAS:VOLT:AC?'>MEAS:VOLT:AC?</option><option value='MEAS:VOLT:DC?'>MEAS:VOLT:DC?</option></select></core-field>
 <core-field><core-icon icon='save'></core-icon><label for='save'>Save</label><input type='text' name='save' id='save' value='$save' flex></core-field>
 <paper-input-decorator label='myPaper'><input name='submit' id='submit' type='submit' value='$texteSubmit' is='core-input'/></paper-input-decorator>";
-if($texteSubmit == "Mesure en cours") {
+if($texteSubmit == "Attente de la connection...") {
 	echo"<paper-input-decorator label='myPaper2'><input type='button' id='stop' name='stop' value='Stop' is='core-input'/></paper-input-decorator>";
 }
 echo"</form>";
@@ -103,8 +119,8 @@ window.onload = function () {
 		});
 
 		var xVal = 0;
-		var yVal = 50;	
-		var updateInterval = 1000;
+		var yVal = 50;
+		var updateInterval = 1000; //En ms
 		var dataLength = 50; // number of dataPoints visible at any point
 
 		var updateChart = function () {
@@ -114,20 +130,27 @@ window.onload = function () {
 					method : 'POST',
 					url : 'ajax.php', // La ressource ciblée
 					data: { address : "<?php echo $address ?>", port : "<?php echo $port ?>", request : "<?php echo $request ?>", save :  "<?php echo $save ?>" },
-					dataType: "html"
+					dataType: "text"
 				})
 				.done(function( yVal ) {
-					yVal = parseFloat(yVal);
+					if(yVal=="10060") {
+						$("#stop").click();
+						document.getElementById("submit").value="Echec de la connection";
+						IP_noty();
+					}
+					else {
+						yVal = parseFloat(yVal);
+						document.getElementById("submit").value="Mesure en cours : "+yVal;
 					
-						dps.push({
-							x: xVal,
-							y: yVal
-						});
-						xVal++;
+							dps.push({
+								x: xVal,
+								y: yVal
+							});
+							xVal++;
 						
 						//Alert if mesure <0.001
 						//Well, alert with notify on head website and push for Chrome>v42 only
-						if(yVal<=0.001) {
+						/*if(yVal<=0.001) {
 							console.log("yVal<=0.001");
 							push_noty();
 							$.ajax({
@@ -136,8 +159,13 @@ window.onload = function () {
 							data: { message :  "Ceci est un test" },
 							dataType: "html"
 							});
-						}
-					});
+						}*/
+					}
+				})
+				.fail(function(jqXHR, textStatus) {
+					clearInterval(interval);
+					IP_noty();
+				});
 
 			if (dps.length > dataLength)
 			{
@@ -147,7 +175,7 @@ window.onload = function () {
 			chart.render();		
 
 		};
-		 if(document.getElementById("submit").value=="Mesure en cours"){
+		 if(document.getElementById("submit").value=="Attente de la connection..."){
 			 $("#stop").show();
 			// generates first set of dataPoints
 			updateChart(); 
