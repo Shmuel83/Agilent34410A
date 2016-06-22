@@ -14,3 +14,5 @@ And let's go.
 Mesure
 Each second, one mesure, graphic is refresh with AJAX, and data is save on file.
 You can add other input for easier configuration.
+
+![PrintScreen](https://github.com/Shmuel83/Agilent34410A/blob/master/printscreen2.png)
